@@ -25,6 +25,7 @@ This application allows you to:
 ```bash
 git clone https://github.com/GeorgeZaglaris/ECT-EC
 cd ECT-EC
+git lfs pull
 
 # Recommended: use a virtual environment
 conda create -n comfort-env python=3.10
