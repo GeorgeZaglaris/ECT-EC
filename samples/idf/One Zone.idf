@@ -1,0 +1,853 @@
+!-Generator IDFEditor 1.55
+!-Option SortedOrder
+
+!-NOTE: All comments with '!-' are ignored by the IDFEditor and are generated automatically.
+!-      Use '!' comments if they need to be retained when using the IDFEditor.
+
+
+!-   ===========  ALL OBJECTS IN CLASS: VERSION ===========
+
+! Minimal.idf
+! Basic file description: This is a minimal configuration necessary to run.
+! Highlights: Illustrates minimal items necessary to perform run.
+! BUILDING, SURFACEGEOMETRY, LOCATION and DESIGNDAY (or RUNPERIOD) are the absolute minimal required input objects.
+! TIME STEP IN HOUR is included so as to not get warning error.
+! Including two design days, Run Control object and RunPeriod to facilitate use.
+! Although not incredibly useful, this could be used as a weather/solar calculator.
+! Simulation Location/Run: Denver is included.  Any could be used.
+! Building: None.
+!
+! Internal gains description: None.
+!
+! HVAC: None.
+!
+Version,
+    25.1;                    !- Version Identifier
+
+
+!-   ===========  ALL OBJECTS IN CLASS: SIMULATIONCONTROL ===========
+
+SimulationControl,
+    No,                      !- Do Zone Sizing Calculation
+    No,                      !- Do System Sizing Calculation
+    No,                      !- Do Plant Sizing Calculation
+    No,                      !- Run Simulation for Sizing Periods
+    Yes,                     !- Run Simulation for Weather File Run Periods
+    No,                      !- Do HVAC Sizing Simulation for Sizing Periods
+    1;                       !- Maximum Number of HVAC Sizing Simulation Passes
+
+
+!-   ===========  ALL OBJECTS IN CLASS: BUILDING ===========
+
+Building,
+    None,                    !- Name
+    0,                       !- North Axis {deg}
+    City,                    !- Terrain
+    0.04,                    !- Loads Convergence Tolerance Value {W}
+    0.40,                    !- Temperature Convergence Tolerance Value {deltaC}
+    FullInteriorAndExterior, !- Solar Distribution
+    25,                      !- Maximum Number of Warmup Days
+    5;                       !- Minimum Number of Warmup Days
+
+
+!-   ===========  ALL OBJECTS IN CLASS: TIMESTEP ===========
+
+Timestep,
+    4;                       !- Number of Timesteps per Hour
+
+
+!-   ===========  ALL OBJECTS IN CLASS: SITE:LOCATION ===========
+
+Site:Location,
+    ATHENS - GRC IWEC Data WMO#=167160,  !- Name
+    37.9,                    !- Latitude {deg}
+    23.73,                   !- Longitude {deg}
+    2,                       !- Time Zone {hr}
+    15;                      !- Elevation {m}
+
+
+!-   ===========  ALL OBJECTS IN CLASS: RUNPERIOD ===========
+
+RunPeriod,
+    Run Period 1,            !- Name
+    1,                       !- Begin Month
+    1,                       !- Begin Day of Month
+    ,                        !- Begin Year
+    12,                      !- End Month
+    31,                      !- End Day of Month
+    ,                        !- End Year
+    Tuesday,                 !- Day of Week for Start Day
+    Yes,                     !- Use Weather File Holidays and Special Days
+    Yes,                     !- Use Weather File Daylight Saving Period
+    No,                      !- Apply Weekend Holiday Rule
+    Yes,                     !- Use Weather File Rain Indicators
+    Yes;                     !- Use Weather File Snow Indicators
+
+
+!-   ===========  ALL OBJECTS IN CLASS: SITE:GROUNDTEMPERATURE:BUILDINGSURFACE ===========
+
+Site:GroundTemperature:BuildingSurface,
+    18.0,                    !- January Ground Temperature {C}
+    18.0,                    !- February Ground Temperature {C}
+    18.0,                    !- March Ground Temperature {C}
+    18.0,                    !- April Ground Temperature {C}
+    18.5,                    !- May Ground Temperature {C}
+    20.0,                    !- June Ground Temperature {C}
+    22.0,                    !- July Ground Temperature {C}
+    22.0,                    !- August Ground Temperature {C}
+    21.0,                    !- September Ground Temperature {C}
+    20.0,                    !- October Ground Temperature {C}
+    19.0,                    !- November Ground Temperature {C}
+    18.0;                    !- December Ground Temperature {C}
+
+
+!-   ===========  ALL OBJECTS IN CLASS: SCHEDULETYPELIMITS ===========
+
+ScheduleTypeLimits,
+    Percent,                 !- Name
+    0,                       !- Lower Limit Value
+    1,                       !- Upper Limit Value
+    Continuous,              !- Numeric Type
+    Percent;                 !- Unit Type
+
+ScheduleTypeLimits,
+    Activity,                !- Name
+    ,                        !- Lower Limit Value
+    ,                        !- Upper Limit Value
+    Continuous,              !- Numeric Type
+    ActivityLevel;           !- Unit Type
+
+ScheduleTypeLimits,
+    AirVelocity,             !- Name
+    ,                        !- Lower Limit Value
+    ,                        !- Upper Limit Value
+    Continuous,              !- Numeric Type
+    Velocity;                !- Unit Type
+
+ScheduleTypeLimits,
+    AnyNumber,               !- Name
+    ,                        !- Lower Limit Value
+    ,                        !- Upper Limit Value
+    Continuous;              !- Numeric Type
+
+
+!-   ===========  ALL OBJECTS IN CLASS: SCHEDULE:COMPACT ===========
+
+Schedule:Compact,
+    Sch_Lighting,            !- Name
+    Percent,                 !- Schedule Type Limits Name
+    THROUGH:12/31,           !- Field 1
+    FOR:WeekDays,            !- Field 2
+    Until: 09:30,            !- Field 3
+    0,                       !- Field 4
+    Until: 17:30,            !- Field 5
+    1,                       !- Field 6
+    Until: 24:00,            !- Field 7
+    0,                       !- Field 8
+    FOR:AllOtherDays,        !- Field 9
+    Until: 24:00,            !- Field 10
+    0;                       !- Field 11
+
+Schedule:Compact,
+    Sch_People,              !- Name
+    Percent,                 !- Schedule Type Limits Name
+    THROUGH:12/31,           !- Field 1
+    FOR:WeekDays,            !- Field 2
+    Until: 09:30,            !- Field 3
+    0,                       !- Field 4
+    Until: 17:30,            !- Field 5
+    1,                       !- Field 6
+    Until: 24:00,            !- Field 7
+    0,                       !- Field 8
+    FOR:AllOtherDays,        !- Field 9
+    Until: 24:00,            !- Field 10
+    0;                       !- Field 11
+
+Schedule:Compact,
+    Sch_Equipment/HVAC,      !- Name
+    Percent,                 !- Schedule Type Limits Name
+    THROUGH:12/31,           !- Field 1
+    FOR:WeekDays,            !- Field 2
+    Until: 09:30,            !- Field 3
+    0,                       !- Field 4
+    Until: 17:30,            !- Field 5
+    1,                       !- Field 6
+    Until: 24:00,            !- Field 7
+    0,                       !- Field 8
+    FOR:AllOtherDays,        !- Field 9
+    Until: 24:00,            !- Field 10
+    0;                       !- Field 11
+
+Schedule:Compact,
+    Sch_Activity,            !- Name
+    Activity,                !- Schedule Type Limits Name
+    THROUGH:12/31,           !- Field 1
+    FOR:AllDays,             !- Field 2
+    Until: 24:00,            !- Field 3
+    120;                     !- Field 4
+
+Schedule:Compact,
+    Sch_Infiltration,        !- Name
+    Percent,                 !- Schedule Type Limits Name
+    THROUGH:12/31,           !- Field 1
+    FOR:WeekDays,            !- Field 2
+    Until: 09:30,            !- Field 3
+    1,                       !- Field 4
+    Until: 17:30,            !- Field 5
+    0,                       !- Field 6
+    Until: 24:00,            !- Field 7
+    1,                       !- Field 8
+    FOR:AllOtherDays,        !- Field 9
+    Until: 24:00,            !- Field 10
+    1;                       !- Field 11
+
+Schedule:Compact,
+    Sch_AirVelocity,         !- Name
+    AirVelocity,             !- Schedule Type Limits Name
+    THROUGH:12/31,           !- Field 1
+    FOR:WeekDays,            !- Field 2
+    Until: 09:30,            !- Field 3
+    0.1,                     !- Field 4
+    Until: 17:30,            !- Field 5
+    0.3,                     !- Field 6
+    Until: 24:00,            !- Field 7
+    0.1,                     !- Field 8
+    FOR:AllOtherDays,        !- Field 9
+    Until: 24:00,            !- Field 10
+    0.1;                     !- Field 11
+
+Schedule:Compact,
+    Sch_ClothInsul,          !- Name
+    AnyNumber,               !- Schedule Type Limits Name
+    THROUGH:03/31,           !- Field 1
+    FOR:WeekDays,            !- Field 2
+    Until: 09:30,            !- Field 3
+    0.6,                     !- Field 4
+    Until: 17:30,            !- Field 5
+    1,                       !- Field 6
+    Until: 24:00,            !- Field 7
+    0.6,                     !- Field 8
+    FOR:AllOtherDays,        !- Field 9
+    Until: 24:00,            !- Field 10
+    0,                       !- Field 11
+    THROUGH:09/30,           !- Field 12
+    FOR:WeekDays,            !- Field 13
+    Until: 09:30,            !- Field 14
+    0.4,                     !- Field 15
+    Until: 17:30,            !- Field 16
+    0.6,                     !- Field 17
+    Until: 24:00,            !- Field 18
+    0.4,                     !- Field 19
+    FOR:AllOtherDays,        !- Field 20
+    Until: 24:00,            !- Field 21
+    0,                       !- Field 22
+    THROUGH:12/31,           !- Field 23
+    FOR:WeekDays,            !- Field 24
+    Until: 09:30,            !- Field 25
+    0.5,                     !- Field 26
+    Until: 17:30,            !- Field 27
+    0.8,                     !- Field 28
+    Until: 24:00,            !- Field 29
+    0.5,                     !- Field 30
+    FOR:AllOtherDays,        !- Field 31
+    Until: 24:00,            !- Field 32
+    0;                       !- Field 33
+
+Schedule:Compact,
+    Sch_WorkEffic,           !- Name
+    AnyNumber,               !- Schedule Type Limits Name
+    THROUGH:12/31,           !- Field 1
+    FOR:WeekDays,            !- Field 2
+    Until: 09:30,            !- Field 3
+    0,                       !- Field 4
+    Until: 17:30,            !- Field 5
+    .02,                     !- Field 6
+    Until: 24:00,            !- Field 7
+    0,                       !- Field 8
+    FOR:AllOtherDays,        !- Field 9
+    Until: 24:00,            !- Field 10
+    0;                       !- Field 11
+
+
+!-   ===========  ALL OBJECTS IN CLASS: MATERIAL ===========
+
+Material,
+    CONCRETE,                !- Name
+    Rough,                   !- Roughness
+    0.1,                     !- Thickness {m}
+    1.75,                    !- Conductivity {W/m-K}
+    2200,                    !- Density {kg/m3}
+    1000,                    !- Specific Heat {J/kg-K}
+    0.9,                     !- Thermal Absorptance
+    0.7,                     !- Solar Absorptance
+    0.7;                     !- Visible Absorptance
+
+Material,
+    DOORPANEL,               !- Name
+    Rough,                   !- Roughness
+    0.045,                   !- Thickness {m}
+    0.5,                     !- Conductivity {W/m-K}
+    800,                     !- Density {kg/m3}
+    900;                     !- Specific Heat {J/kg-K}
+
+
+!-   ===========  ALL OBJECTS IN CLASS: MATERIAL:NOMASS ===========
+
+Material:NoMass,
+    INSULATION,              !- Name
+    MediumSmooth,            !- Roughness
+    2,                       !- Thermal Resistance {m2-K/W}
+    0.9,                     !- Thermal Absorptance
+    0.7,                     !- Solar Absorptance
+    0.7;                     !- Visible Absorptance
+
+
+!-   ===========  ALL OBJECTS IN CLASS: MATERIAL:AIRGAP ===========
+
+Material:AirGap,
+    AIR_GAP,                 !- Name
+    0.5;                     !- Thermal Resistance {m2-K/W}
+
+
+!-   ===========  ALL OBJECTS IN CLASS: WINDOWMATERIAL:SIMPLEGLAZINGSYSTEM ===========
+
+WindowMaterial:SimpleGlazingSystem,
+    SIMPLEWINDOW,            !- Name
+    2.7,                     !- U-Factor {W/m2-K}
+    0.6,                     !- Solar Heat Gain Coefficient
+    0.5;                     !- Visible Transmittance
+
+
+!-   ===========  ALL OBJECTS IN CLASS: WINDOWMATERIAL:GLAZING ===========
+
+WindowMaterial:Glazing,
+    GLASS_1,                 !- Name
+    SpectralAverage,         !- Optical Data Type
+    ,                        !- Window Glass Spectral Data Set Name
+    0.008,                   !- Thickness {m}
+    ,                        !- Solar Transmittance at Normal Incidence
+    ,                        !- Front Side Solar Reflectance at Normal Incidence
+    ,                        !- Back Side Solar Reflectance at Normal Incidence
+    ,                        !- Visible Transmittance at Normal Incidence
+    ,                        !- Front Side Visible Reflectance at Normal Incidence
+    ,                        !- Back Side Visible Reflectance at Normal Incidence
+    ,                        !- Infrared Transmittance at Normal Incidence
+    0.84,                    !- Front Side Infrared Hemispherical Emissivity
+    0.84,                    !- Back Side Infrared Hemispherical Emissivity
+    0.9,                     !- Conductivity {W/m-K}
+    1,                       !- Dirt Correction Factor for Solar and Visible Transmittance
+    No,                      !- Solar Diffusing
+    72000000000,             !- Young's modulus {Pa}
+    0.22;                    !- Poisson's ratio
+
+WindowMaterial:Glazing,
+    GLASS_2,                 !- Name
+    SpectralAverage,         !- Optical Data Type
+    ,                        !- Window Glass Spectral Data Set Name
+    0.006,                   !- Thickness {m}
+    ,                        !- Solar Transmittance at Normal Incidence
+    ,                        !- Front Side Solar Reflectance at Normal Incidence
+    ,                        !- Back Side Solar Reflectance at Normal Incidence
+    ,                        !- Visible Transmittance at Normal Incidence
+    ,                        !- Front Side Visible Reflectance at Normal Incidence
+    ,                        !- Back Side Visible Reflectance at Normal Incidence
+    ,                        !- Infrared Transmittance at Normal Incidence
+    0.84,                    !- Front Side Infrared Hemispherical Emissivity
+    0.84,                    !- Back Side Infrared Hemispherical Emissivity
+    0.9,                     !- Conductivity {W/m-K}
+    1,                       !- Dirt Correction Factor for Solar and Visible Transmittance
+    No,                      !- Solar Diffusing
+    72000000000,             !- Young's modulus {Pa}
+    0.22;                    !- Poisson's ratio
+
+
+!-   ===========  ALL OBJECTS IN CLASS: WINDOWMATERIAL:GAS ===========
+
+WindowMaterial:Gas,
+    WINDOWGAS,               !- Name
+    Air,                     !- Gas Type
+    0.01;                    !- Thickness {m}
+
+
+!-   ===========  ALL OBJECTS IN CLASS: CONSTRUCTION ===========
+
+Construction,
+    XWROS,                   !- Name
+    CONCRETE;                !- Outside Layer
+
+Construction,
+    XWROS_INSOLUTION,        !- Name
+    CONCRETE,                !- Outside Layer
+    INSULATION,              !- Layer 2
+    CONCRETE;                !- Layer 3
+
+Construction,
+    XWROS_AIRGAP,            !- Name
+    CONCRETE,                !- Outside Layer
+    AIR_GAP,                 !- Layer 2
+    CONCRETE;                !- Layer 3
+
+Construction,
+    CONS_SIMPLEWINDOW,       !- Name
+    SIMPLEWINDOW;            !- Outside Layer
+
+Construction,
+    MyGlazing,               !- Name
+    GLASS_1,                 !- Outside Layer
+    WINDOWGAS,               !- Layer 2
+    GLASS_2;                 !- Layer 3
+
+Construction,
+    CONS_DOOR,               !- Name
+    DOORPANEL;               !- Outside Layer
+
+
+!-   ===========  ALL OBJECTS IN CLASS: GLOBALGEOMETRYRULES ===========
+
+GlobalGeometryRules,
+    UpperLeftCorner,         !- Starting Vertex Position
+    CounterClockWise,        !- Vertex Entry Direction
+    World;                   !- Coordinate System
+
+
+!-   ===========  ALL OBJECTS IN CLASS: ZONE ===========
+
+Zone,
+    X_EKDHLWSEWN,            !- Name
+    ,                        !- Direction of Relative North {deg}
+    0,                       !- X Origin {m}
+    0,                       !- Y Origin {m}
+    0,                       !- Z Origin {m}
+    1,                       !- Type
+    1,                       !- Multiplier
+    autocalculate,           !- Ceiling Height {m}
+    autocalculate,           !- Volume {m3}
+    autocalculate,           !- Floor Area {m2}
+    ,                        !- Zone Inside Convection Algorithm
+    ,                        !- Zone Outside Convection Algorithm
+    Yes;                     !- Part of Total Floor Area
+
+
+!-   ===========  ALL OBJECTS IN CLASS: BUILDINGSURFACE:DETAILED ===========
+
+! top-left
+! top-right
+! bottom-right
+! bottom-left
+BuildingSurface:Detailed,
+    WALL_NORTH,              !- Name
+    Wall,                    !- Surface Type
+    XWROS,                   !- Construction Name
+    X_EKDHLWSEWN,            !- Zone Name
+    ,                        !- Space Name
+    Outdoors,                !- Outside Boundary Condition
+    WINDOW_N_WALL,           !- Outside Boundary Condition Object
+    SunExposed,              !- Sun Exposure
+    WindExposed,             !- Wind Exposure
+    autocalculate,           !- View Factor to Ground
+    autocalculate,           !- Number of Vertices
+    0.0,                     !- Vertex 1 X-coordinate {m}
+    10.0,                    !- Vertex 1 Y-coordinate {m}
+    3.0,                     !- Vertex 1 Z-coordinate {m}
+    10.0,                    !- Vertex 2 X-coordinate {m}
+    10.0,                    !- Vertex 2 Y-coordinate {m}
+    3.0,                     !- Vertex 2 Z-coordinate {m}
+    10.0,                    !- Vertex 3 X-coordinate {m}
+    10.0,                    !- Vertex 3 Y-coordinate {m}
+    0.0,                     !- Vertex 3 Z-coordinate {m}
+    0.0,                     !- Vertex 4 X-coordinate {m}
+    10.0,                    !- Vertex 4 Y-coordinate {m}
+    0.0;                     !- Vertex 4 Z-coordinate {m}
+
+! top-left
+! top-right
+! bottom-right
+! bottom-left
+BuildingSurface:Detailed,
+    WALL_SOUTH,              !- Name
+    Wall,                    !- Surface Type
+    XWROS,                   !- Construction Name
+    X_EKDHLWSEWN,            !- Zone Name
+    ,                        !- Space Name
+    Outdoors,                !- Outside Boundary Condition
+    DOOR_S_WALL,             !- Outside Boundary Condition Object
+    NoSun,                   !- Sun Exposure
+    NoWind,                  !- Wind Exposure
+    autocalculate,           !- View Factor to Ground
+    autocalculate,           !- Number of Vertices
+    10.0,                    !- Vertex 1 X-coordinate {m}
+    0.0,                     !- Vertex 1 Y-coordinate {m}
+    3.0,                     !- Vertex 1 Z-coordinate {m}
+    0.0,                     !- Vertex 2 X-coordinate {m}
+    0.0,                     !- Vertex 2 Y-coordinate {m}
+    3.0,                     !- Vertex 2 Z-coordinate {m}
+    0.0,                     !- Vertex 3 X-coordinate {m}
+    0.0,                     !- Vertex 3 Y-coordinate {m}
+    0.0,                     !- Vertex 3 Z-coordinate {m}
+    10.0,                    !- Vertex 4 X-coordinate {m}
+    0.0,                     !- Vertex 4 Y-coordinate {m}
+    0.0;                     !- Vertex 4 Z-coordinate {m}
+
+! top-left
+! top-right
+! bottom-right
+! bottom-left
+BuildingSurface:Detailed,
+    WALL_WEST,               !- Name
+    Wall,                    !- Surface Type
+    XWROS,                   !- Construction Name
+    X_EKDHLWSEWN,            !- Zone Name
+    ,                        !- Space Name
+    Adiabatic,               !- Outside Boundary Condition
+    ,                        !- Outside Boundary Condition Object
+    NoSun,                   !- Sun Exposure
+    NoWind,                  !- Wind Exposure
+    autocalculate,           !- View Factor to Ground
+    autocalculate,           !- Number of Vertices
+    0.0,                     !- Vertex 1 X-coordinate {m}
+    10.0,                    !- Vertex 1 Y-coordinate {m}
+    3.0,                     !- Vertex 1 Z-coordinate {m}
+    0.0,                     !- Vertex 2 X-coordinate {m}
+    0.0,                     !- Vertex 2 Y-coordinate {m}
+    3.0,                     !- Vertex 2 Z-coordinate {m}
+    0.0,                     !- Vertex 3 X-coordinate {m}
+    0.0,                     !- Vertex 3 Y-coordinate {m}
+    0.0,                     !- Vertex 3 Z-coordinate {m}
+    0.0,                     !- Vertex 4 X-coordinate {m}
+    10.0,                    !- Vertex 4 Y-coordinate {m}
+    0.0;                     !- Vertex 4 Z-coordinate {m}
+
+! top-left
+! top-right
+! bottom-right
+! bottom-left
+BuildingSurface:Detailed,
+    WALL_EAST,               !- Name
+    Wall,                    !- Surface Type
+    XWROS,                   !- Construction Name
+    X_EKDHLWSEWN,            !- Zone Name
+    ,                        !- Space Name
+    Adiabatic,               !- Outside Boundary Condition
+    ,                        !- Outside Boundary Condition Object
+    NoSun,                   !- Sun Exposure
+    NoWind,                  !- Wind Exposure
+    autocalculate,           !- View Factor to Ground
+    autocalculate,           !- Number of Vertices
+    10.0,                    !- Vertex 1 X-coordinate {m}
+    0.0,                     !- Vertex 1 Y-coordinate {m}
+    3.0,                     !- Vertex 1 Z-coordinate {m}
+    10.0,                    !- Vertex 2 X-coordinate {m}
+    10.0,                    !- Vertex 2 Y-coordinate {m}
+    3.0,                     !- Vertex 2 Z-coordinate {m}
+    10.0,                    !- Vertex 3 X-coordinate {m}
+    10.0,                    !- Vertex 3 Y-coordinate {m}
+    0.0,                     !- Vertex 3 Z-coordinate {m}
+    10.0,                    !- Vertex 4 X-coordinate {m}
+    0.0,                     !- Vertex 4 Y-coordinate {m}
+    0.0;                     !- Vertex 4 Z-coordinate {m}
+
+! top-left
+! bottom-left
+! bottom-right
+! top-right
+BuildingSurface:Detailed,
+    CEILING,                 !- Name
+    Ceiling,                 !- Surface Type
+    XWROS,                   !- Construction Name
+    X_EKDHLWSEWN,            !- Zone Name
+    ,                        !- Space Name
+    Adiabatic,               !- Outside Boundary Condition
+    ,                        !- Outside Boundary Condition Object
+    NoSun,                   !- Sun Exposure
+    NoWind,                  !- Wind Exposure
+    autocalculate,           !- View Factor to Ground
+    autocalculate,           !- Number of Vertices
+    0.0,                     !- Vertex 1 X-coordinate {m}
+    10.0,                    !- Vertex 1 Y-coordinate {m}
+    3.0,                     !- Vertex 1 Z-coordinate {m}
+    0.0,                     !- Vertex 2 X-coordinate {m}
+    0.0,                     !- Vertex 2 Y-coordinate {m}
+    3.0,                     !- Vertex 2 Z-coordinate {m}
+    10.0,                    !- Vertex 3 X-coordinate {m}
+    0.0,                     !- Vertex 3 Y-coordinate {m}
+    3.0,                     !- Vertex 3 Z-coordinate {m}
+    10.0,                    !- Vertex 4 X-coordinate {m}
+    10.0,                    !- Vertex 4 Y-coordinate {m}
+    3.0;                     !- Vertex 4 Z-coordinate {m}
+
+! top-left (Y+)
+! top-right
+! bottom-right
+! bottom-left
+BuildingSurface:Detailed,
+    FLOOR,                   !- Name
+    Floor,                   !- Surface Type
+    XWROS,                   !- Construction Name
+    X_EKDHLWSEWN,            !- Zone Name
+    ,                        !- Space Name
+    Ground,                  !- Outside Boundary Condition
+    ,                        !- Outside Boundary Condition Object
+    NoSun,                   !- Sun Exposure
+    NoWind,                  !- Wind Exposure
+    autocalculate,           !- View Factor to Ground
+    autocalculate,           !- Number of Vertices
+    0.0,                     !- Vertex 1 X-coordinate {m}
+    10.0,                    !- Vertex 1 Y-coordinate {m}
+    0.0,                     !- Vertex 1 Z-coordinate {m}
+    10.0,                    !- Vertex 2 X-coordinate {m}
+    10.0,                    !- Vertex 2 Y-coordinate {m}
+    0.0,                     !- Vertex 2 Z-coordinate {m}
+    10.0,                    !- Vertex 3 X-coordinate {m}
+    0.0,                     !- Vertex 3 Y-coordinate {m}
+    0.0,                     !- Vertex 3 Z-coordinate {m}
+    0.0,                     !- Vertex 4 X-coordinate {m}
+    0.0,                     !- Vertex 4 Y-coordinate {m}
+    0.0;                     !- Vertex 4 Z-coordinate {m}
+
+
+!-   ===========  ALL OBJECTS IN CLASS: FENESTRATIONSURFACE:DETAILED ===========
+
+FenestrationSurface:Detailed,
+    WINDOW_N_WALL,           !- Name
+    Window,                  !- Surface Type
+    MyGlazing,               !- Construction Name
+    WALL_NORTH,              !- Building Surface Name
+    ,                        !- Outside Boundary Condition Object
+    autocalculate,           !- View Factor to Ground
+    ,                        !- Frame and Divider Name
+    1,                       !- Multiplier
+    autocalculate,           !- Number of Vertices
+    4.5,                     !- Vertex 1 X-coordinate {m}
+    0.0,                     !- Vertex 1 Y-coordinate {m}
+    2.1,                     !- Vertex 1 Z-coordinate {m}
+    5.5,                     !- Vertex 2 X-coordinate {m}
+    0.0,                     !- Vertex 2 Y-coordinate {m}
+    2.1,                     !- Vertex 2 Z-coordinate {m}
+    5.5,                     !- Vertex 3 X-coordinate {m}
+    0.0,                     !- Vertex 3 Y-coordinate {m}
+    0.0,                     !- Vertex 3 Z-coordinate {m}
+    4.5,                     !- Vertex 4 X-coordinate {m}
+    0.0,                     !- Vertex 4 Y-coordinate {m}
+    0.0;                     !- Vertex 4 Z-coordinate {m}
+
+FenestrationSurface:Detailed,
+    DOOR_S_WALL,             !- Name
+    Door,                    !- Surface Type
+    CONS_DOOR,               !- Construction Name
+    WALL_SOUTH,              !- Building Surface Name
+    ,                        !- Outside Boundary Condition Object
+    autocalculate,           !- View Factor to Ground
+    ,                        !- Frame and Divider Name
+    1,                       !- Multiplier
+    autocalculate,           !- Number of Vertices
+    4.5,                     !- Vertex 1 X-coordinate {m}
+    0.0,                     !- Vertex 1 Y-coordinate {m}
+    2.0,                     !- Vertex 1 Z-coordinate {m}
+    4.5,                     !- Vertex 2 X-coordinate {m}
+    0.0,                     !- Vertex 2 Y-coordinate {m}
+    0.0,                     !- Vertex 2 Z-coordinate {m}
+    5.5,                     !- Vertex 3 X-coordinate {m}
+    0.0,                     !- Vertex 3 Y-coordinate {m}
+    0.0,                     !- Vertex 3 Z-coordinate {m}
+    5.5,                     !- Vertex 4 X-coordinate {m}
+    0.0,                     !- Vertex 4 Y-coordinate {m}
+    2.0;                     !- Vertex 4 Z-coordinate {m}
+
+
+!-   ===========  ALL OBJECTS IN CLASS: PEOPLE ===========
+
+People,
+    People_Venue,            !- Name
+    X_EKDHLWSEWN,            !- Zone or ZoneList or Space or SpaceList Name
+    Sch_People,              !- Number of People Schedule Name
+    People,                  !- Number of People Calculation Method
+    30,                      !- Number of People
+    ,                        !- People per Floor Area {person/m2}
+    ,                        !- Floor Area per Person {m2/person}
+    0.3,                     !- Fraction Radiant
+    autocalculate,           !- Sensible Heat Fraction
+    Sch_Activity,            !- Activity Level Schedule Name
+    0.0000000382,            !- Carbon Dioxide Generation Rate {m3/s-W}
+    No,                      !- Enable ASHRAE 55 Comfort Warnings
+    EnclosureAveraged,       !- Mean Radiant Temperature Calculation Type
+    ,                        !- Surface Name/Angle Factor List Name
+    Sch_WorkEffic,           !- Work Efficiency Schedule Name
+    ClothingInsulationSchedule,  !- Clothing Insulation Calculation Method
+    Sch_ClothInsul,          !- Clothing Insulation Calculation Method Schedule Name
+    Sch_ClothInsul,          !- Clothing Insulation Schedule Name
+    Sch_AirVelocity,         !- Air Velocity Schedule Name
+    FANGER,                  !- Thermal Comfort Model 1 Type
+    PIERCE,                  !- Thermal Comfort Model 2 Type
+    AdaptiveASH55,           !- Thermal Comfort Model 3 Type
+    ,                        !- Thermal Comfort Model 4 Type
+    ,                        !- Thermal Comfort Model 5 Type
+    ,                        !- Thermal Comfort Model 6 Type
+    ,                        !- Thermal Comfort Model 7 Type
+    ,                        !- Ankle Level Air Velocity Schedule Name
+    15.56,                   !- Cold Stress Temperature Threshold {C}
+    30;                      !- Heat Stress Temperature Threshold {C}
+
+
+!-   ===========  ALL OBJECTS IN CLASS: LIGHTS ===========
+
+Lights,
+    Lights_Venue,            !- Name
+    X_EKDHLWSEWN,            !- Zone or ZoneList or Space or SpaceList Name
+    Sch_Lighting,            !- Schedule Name
+    LightingLevel,           !- Design Level Calculation Method
+    1000,                    !- Lighting Level {W}
+    ,                        !- Watts per Floor Area {W/m2}
+    ,                        !- Watts per Person {W/person}
+    ,                        !- Return Air Fraction
+    ,                        !- Fraction Radiant
+    ,                        !- Fraction Visible
+    1,                       !- Fraction Replaceable
+    General,                 !- End-Use Subcategory
+    No;                      !- Return Air Fraction Calculated from Plenum Temperature
+
+
+!-   ===========  ALL OBJECTS IN CLASS: ELECTRICEQUIPMENT ===========
+
+ElectricEquipment,
+    EQUIPMENT_VENUE,         !- Name
+    X_EKDHLWSEWN,            !- Zone or ZoneList or Space or SpaceList Name
+    Sch_Equipment/HVAC,      !- Schedule Name
+    EquipmentLevel,          !- Design Level Calculation Method
+    12000,                   !- Design Level {W}
+    ,                        !- Watts per Floor Area {W/m2}
+    ,                        !- Watts per Person {W/person}
+    ,                        !- Fraction Latent
+    ,                        !- Fraction Radiant
+    ,                        !- Fraction Lost
+    General;                 !- End-Use Subcategory
+
+
+!-   ===========  ALL OBJECTS IN CLASS: ZONEINFILTRATION:DESIGNFLOWRATE ===========
+
+ZoneInfiltration:DesignFlowRate,
+    Infiltration,            !- Name
+    X_EKDHLWSEWN,            !- Zone or ZoneList or Space or SpaceList Name
+    Sch_Infiltration,        !- Schedule Name
+    AirChanges/Hour,         !- Design Flow Rate Calculation Method
+    ,                        !- Design Flow Rate {m3/s}
+    ,                        !- Flow Rate per Floor Area {m3/s-m2}
+    ,                        !- Flow Rate per Exterior Surface Area {m3/s-m2}
+    2,                       !- Air Changes per Hour {1/hr}
+    1,                       !- Constant Term Coefficient
+    ,                        !- Temperature Term Coefficient
+    ,                        !- Velocity Term Coefficient
+    ,                        !- Velocity Squared Term Coefficient
+    Outdoor;                 !- Density Basis
+
+
+!-   ===========  ALL OBJECTS IN CLASS: HVACTEMPLATE:THERMOSTAT ===========
+
+HVACTemplate:Thermostat,
+    MyThermostat,            !- Name
+    ,                        !- Heating Setpoint Schedule Name
+    22,                      !- Constant Heating Setpoint {C}
+    ,                        !- Cooling Setpoint Schedule Name
+    24;                      !- Constant Cooling Setpoint {C}
+
+
+!-   ===========  ALL OBJECTS IN CLASS: HVACTEMPLATE:ZONE:IDEALLOADSAIRSYSTEM ===========
+
+HVACTemplate:Zone:IdealLoadsAirSystem,
+    X_EKDHLWSEWN,            !- Zone Name
+    MyThermostat,            !- Template Thermostat Name
+    Sch_Equipment/HVAC,      !- System Availability Schedule Name
+    50,                      !- Maximum Heating Supply Air Temperature {C}
+    13,                      !- Minimum Cooling Supply Air Temperature {C}
+    0.0156,                  !- Maximum Heating Supply Air Humidity Ratio {kgWater/kgDryAir}
+    0.0077,                  !- Minimum Cooling Supply Air Humidity Ratio {kgWater/kgDryAir}
+    NoLimit,                 !- Heating Limit
+    ,                        !- Maximum Heating Air Flow Rate {m3/s}
+    ,                        !- Maximum Sensible Heating Capacity {W}
+    NoLimit,                 !- Cooling Limit
+    ,                        !- Maximum Cooling Air Flow Rate {m3/s}
+    ,                        !- Maximum Total Cooling Capacity {W}
+    ,                        !- Heating Availability Schedule Name
+    ,                        !- Cooling Availability Schedule Name
+    ConstantSensibleHeatRatio,  !- Dehumidification Control Type
+    0.7,                     !- Cooling Sensible Heat Ratio {dimensionless}
+    60,                      !- Dehumidification Setpoint {percent}
+    None,                    !- Humidification Control Type
+    30,                      !- Humidification Setpoint {percent}
+    DetailedSpecification,   !- Outdoor Air Method
+    ,                        !- Outdoor Air Flow Rate per Person {m3/s}
+    ,                        !- Outdoor Air Flow Rate per Zone Floor Area {m3/s-m2}
+    ,                        !- Outdoor Air Flow Rate per Zone {m3/s}
+    AirRenovation,           !- Design Specification Outdoor Air Object Name
+    None,                    !- Demand Controlled Ventilation Type
+    NoEconomizer,            !- Outdoor Air Economizer Type
+    None,                    !- Heat Recovery Type
+    0.7,                     !- Sensible Heat Recovery Effectiveness {dimensionless}
+    0.65;                    !- Latent Heat Recovery Effectiveness {dimensionless}
+
+
+!-   ===========  ALL OBJECTS IN CLASS: DESIGNSPECIFICATION:OUTDOORAIR ===========
+
+DesignSpecification:OutdoorAir,
+    AirRenovation,           !- Name
+    AirChanges/Hour,         !- Outdoor Air Method
+    ,                        !- Outdoor Air Flow per Person {m3/s-person}
+    ,                        !- Outdoor Air Flow per Zone Floor Area {m3/s-m2}
+    ,                        !- Outdoor Air Flow per Zone {m3/s}
+    5;                       !- Outdoor Air Flow Air Changes per Hour {1/hr}
+
+
+!-   ===========  ALL OBJECTS IN CLASS: OUTPUT:VARIABLEDICTIONARY ===========
+
+Output:VariableDictionary,
+    IDF;                     !- Key Field
+
+
+!-   ===========  ALL OBJECTS IN CLASS: OUTPUT:TABLE:SUMMARYREPORTS ===========
+
+Output:Table:SummaryReports,
+    AllSummary;              !- Report 1 Name
+
+
+!-   ===========  ALL OBJECTS IN CLASS: OUTPUTCONTROL:TABLE:STYLE ===========
+
+OutputControl:Table:Style,
+    HTML;                    !- Column Separator
+
+
+!-   ===========  ALL OBJECTS IN CLASS: OUTPUTCONTROL:RESILIENCESUMMARIES ===========
+
+OutputControl:ResilienceSummaries,
+    Simplified;              !- Heat Index Algorithm
+
+
+!-   ===========  ALL OBJECTS IN CLASS: OUTPUT:VARIABLE ===========
+Output:Variable,
+    *, 
+    Zone Thermal Comfort Fanger Model PMV,
+    hourly;
+
+Output:Variable,
+    *, 
+    Zone Thermal Comfort Fanger Model PPD,
+    hourly;
+
+Output:Meter,
+    Electricity:Zone,         !- Meter Name
+    hourly;                   !- Reporting Frequency
+
+
+Output:Meter,
+    InteriorLights:Electricity,
+    hourly;
+
+Output:Meter,
+    InteriorEquipment:Electricity,
+    hourly;
+
+Output:Meter,
+    Cooling:DistrictCooling,
+    hourly;
+
+Output:Meter,
+    Heating:DistrictHeatingWater,
+    hourly;
