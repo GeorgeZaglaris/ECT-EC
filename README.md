@@ -20,6 +20,23 @@ This application allows you to:
 
 ---
 
+##  Prerequisites
+
+Before installation, make sure you have:
+
+- **Python 3.10+**
+- [Anaconda](https://www.anaconda.com/download) or [Miniconda](https://docs.conda.io/en/latest/miniconda.html) installed  
+  → Recommended for managing virtual environments
+
+If you don't have Conda installed:
+
+- Download from:
+  - [Miniconda (lightweight)](https://docs.conda.io/en/latest/miniconda.html)
+  - [Anaconda (full data science suite)](https://www.anaconda.com/download)
+- After installation, open **Anaconda Prompt** (on Windows) or your terminal
+
+---
+
 ##  Installation
 
 ```bash
@@ -27,15 +44,12 @@ git clone https://github.com/GeorgeZaglaris/ECT-EC
 cd ECT-EC
 git lfs pull
 
-# Recommended: use a virtual environment
+# Create a virtual environment (recommended)
 conda create -n comfort-env python=3.10
 conda activate comfort-env
 
 # Install dependencies
 pip install -r requirements.txt
-```
-
----
 
 ##  Requirements
 
