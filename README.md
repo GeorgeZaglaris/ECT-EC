@@ -1,3 +1,4 @@
+
 #  Thermal Comfort Prediction & EnergyPlus Simulation Tool
 
 This application allows you to:
@@ -35,18 +36,21 @@ If you don't have Conda installed:
   - [Anaconda (full data science suite)](https://www.anaconda.com/download)
 - After installation, open **Anaconda Prompt** (on Windows) or your terminal
 
+⚠️ **EnergyPlus must be downloaded and installed manually** from [https://energyplus.net](https://energyplus.net)
+
 ---
 
 ##  Installation
 
-Install Git LFS(Large File Support)
+Install Git LFS (Large File Support)
 
 Before cloning the repository, install Git LFS:
 
 Visit https://git-lfs.com
 
--Initialize Git LFS (once per system)
-```bass
+- Initialize Git LFS (once per system)
+
+```bash
 git lfs install
 git clone https://github.com/GeorgeZaglaris/ECT-EC
 cd ECT-EC
@@ -59,6 +63,21 @@ conda activate comfort-env
 # Install dependencies
 pip install -r requirements.txt
 ```
+
+---
+
+## Additional Requirements (for API)
+
+If you want to run the ML model via API:
+
+```bash
+pip install fastapi uvicorn
+```
+
+Or include them in your `requirements.txt`.
+
+---
+
 ##  Requirements
 
 - Python 3.10+
