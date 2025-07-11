@@ -6,3 +6,4 @@ statsmodels
 scikit-learn
 fastapi
 uvicorn
+PyJWT
