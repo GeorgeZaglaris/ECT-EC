@@ -3,7 +3,7 @@
 This application allows you to:
 
 - **Predict thermal comfort metrics (PMV & PPD)** using a pre-trained Machine Learning model.
-- **Run EnergyPlus simulations** with .idf and .epw files to compute PMV and energy consumption.
+- **Run EnergyPlus simulations** with `.idf` and `.epw` files to compute PMV and energy consumption.
 - **Visualize** the relationship between PMV and energy consumption.
 - Interact with everything via a modern **Streamlit dashboard**.
 
@@ -11,8 +11,8 @@ This application allows you to:
 
 ##  Features
 
-- Upload .csv files with measured environmental data to predict PMV/PPD using an ML model.
-- Upload .idf and .epw files to simulate indoor comfort and energy use via EnergyPlus.
+- Upload `.csv` files with measured environmental data to predict PMV/PPD using an ML model.
+- Upload `.idf` and `.epw` files to simulate indoor comfort and energy use via EnergyPlus.
 - Graphs showing:
   - PMV vs Energy (scatter + regression)
   - PMV over time
@@ -38,8 +38,13 @@ If you don't have Conda installed:
 ---
 
 ##  Installation
+Install Git LFS(Large File Support)
+Before cloning the repository, install Git LFS:
+Visit https://git-lfs.com
 
-bash
+Initialize Git LFS (once per system)
+```bass
+git lfs install
 git clone https://github.com/GeorgeZaglaris/ECT-EC
 cd ECT-EC
 git lfs pull
@@ -50,7 +55,7 @@ conda activate comfort-env
 
 # Install dependencies
 pip install -r requirements.txt
-
+```
 ##  Requirements
 
 - Python 3.10+
@@ -85,7 +90,8 @@ To use the ML prediction option, your CSV file must include the following column
 ##  IDF Output Requirements (EnergyPlus)
 
 Your `.idf` file **must include** the following output variables/meters to generate the required analysis:
-idf
+
+```idf
 Output:Variable,
     *, Zone Thermal Comfort Fanger Model PMV, hourly;
 
@@ -100,13 +106,18 @@ Output:Meter,
 
 Output:Meter,
     Heating:DistrictHeatingWater, hourly;
+```
+
 These outputs are required to compute hourly **PMV** and total **energy consumption** in kWh.
 
 ---
 
 ##  Running the App
-bash
+
+```bash
 streamlit run app.py
+```
+
 The app will open in your browser at `http://localhost:8501`.
 
 ---
@@ -114,9 +125,12 @@ The app will open in your browser at `http://localhost:8501`.
 ##  Optional: ML Prediction API (FastAPI)
 
 If you want to run the ML model separately:
-bash
+
+```bash
 # Start the FastAPI server (backend must be implemented separately)
 uvicorn api:app --reload
+```
+
 Then in the Streamlit app, ensure that `http://127.0.0.1:8000/predict` is accessible.
 
 ---
@@ -133,4 +147,4 @@ Each one is generated dynamically inside the Streamlit app after prediction or s
 
 ##  Credits
 
-Developed for internal testing at **Uni.systems** for evaluating indoor comf
+Developed for internal testing at **Uni.systems** for evaluating indoor comfort and energy tradeoffs using ML and EnergyPlus.
