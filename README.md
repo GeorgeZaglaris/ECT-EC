@@ -36,7 +36,7 @@ If you don't have Conda installed:
   - [Anaconda (full data science suite)](https://www.anaconda.com/download)
 - After installation, open **Anaconda Prompt** (on Windows) or your terminal
 
-⚠️ **EnergyPlus must be downloaded and installed manually** from [https://energyplus.net](https://energyplus.net)
+ **EnergyPlus must be downloaded and installed manually** from [https://energyplus.net](https://energyplus.net)
 
 ---
 
@@ -74,7 +74,7 @@ If you want to run the ML model via API:
 pip install fastapi uvicorn
 ```
 
-Or include them in your `requirements.txt`.
+
 
 ---
 
