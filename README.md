@@ -38,9 +38,12 @@ If you don't have Conda installed:
 ---
 
 ##  Installation
--Install Git LFS(Large File Support)
--Before cloning the repository, install Git LFS:
--Visit https://git-lfs.com
+
+Install Git LFS(Large File Support)
+
+Before cloning the repository, install Git LFS:
+
+Visit https://git-lfs.com
 
 -Initialize Git LFS (once per system)
 ```bass
