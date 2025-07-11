@@ -38,6 +38,12 @@ If you don't have Conda installed:
 ---
 
 ##  Installation
+Install Git LFS
+Visit https://git-lfs.com or use a package manager:
+
+Initialize Git LFS (once per system)
+```bash
+git lfs install
 
 ```bash
 git clone https://github.com/GeorgeZaglaris/ECT-EC
