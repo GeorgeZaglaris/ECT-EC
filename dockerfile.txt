@@ -1,13 +1,19 @@
 # Use Python 3.10 base image
 FROM python:3.10-slim
 
+# Install distutils
+RUN apt-get update && apt-get install -y python3-distutils
+
 # Set working directory inside the container
 WORKDIR /app
 
 # Copy requirements.txt into the container
 COPY requirements.txt .
 
-# Install dependencies
+# Upgrade pip and setuptools
+RUN pip install --upgrade pip setuptools wheel
+
+# Install dependencies (ensure numpy comes first)
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of the application code
