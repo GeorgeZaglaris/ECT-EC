@@ -260,7 +260,6 @@ elif mode == "EnergyPlus Simulation":
                 st.error(f"Simulation failed: {e}")
                 '''
 
-from pycaret.regression import load_model, predict_model
 
 # Load the trained PyCaret model
 model = load_model('my_model_et')
