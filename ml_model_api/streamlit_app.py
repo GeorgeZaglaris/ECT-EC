@@ -11,7 +11,7 @@ import shutil
 from pycaret.regression import load_model, predict_model
 
 # Load the trained PyCaret model (adjust path as needed)
-model = load_model('my_model_et')
+model = load_model('./ml_model_api/my_model_et')
 
 st.set_page_config(page_title="Thermal Comfort Tool", layout="wide")
 
