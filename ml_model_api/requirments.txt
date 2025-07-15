@@ -9,4 +9,5 @@ scikit-learn
 fastapi
 uvicorn
 PyJWT
-pycaret
+pycaret[full]
+numba
