@@ -1,4 +1,4 @@
-import os
+'''import os
 import subprocess
 import pandas as pd
 import math
@@ -12,7 +12,7 @@ import tempfile
 import shutil
 
 
-'''st.set_page_config(page_title="Thermal Comfort Tool", layout="wide")
+st.set_page_config(page_title="Thermal Comfort Tool", layout="wide")
 
 st.title("Uni.systems")
 st.header("Comfortness prediction tool for the building of Uni.systems and electric energy consumption.")
@@ -260,6 +260,13 @@ elif mode == "EnergyPlus Simulation":
                 st.error(f"Simulation failed: {e}")
                 '''
 
+import math
+import pandas as pd
+import plotly.express as px
+import plotly.graph_objects as go
+import statsmodels.api as sm
+import streamlit as st
+from pycaret.regression import load_model, predict_model
 
 # Load the trained PyCaret model
 model = load_model('my_model_et')
@@ -402,4 +409,5 @@ uploaded_file = st.file_uploader("Upload your CSV data for prediction", type=["c
 if uploaded_file is not None:
     df = pd.read_csv(uploaded_file)
     process_ml_dataframe(df)
+
 
