@@ -11,3 +11,4 @@ fastapi
 uvicorn
 PyJWT
 pycaret[full]
+imblearn
