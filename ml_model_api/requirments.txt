@@ -1,0 +1,12 @@
+numpy
+streamlit
+pandas
+requests
+plotly
+cython
+statsmodels
+scikit-learn
+fastapi
+uvicorn
+PyJWT
+pycaret
