@@ -8,3 +8,7 @@ git lfs install
 
 # Pull the LFS files
 git lfs pull
+
+pip install --upgrade pip setuptools wheel
+
+pip install -r requirements.txt
