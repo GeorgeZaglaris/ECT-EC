@@ -1,15 +1,9 @@
-import os
-import subprocess
-import pandas as pd
 import math
+import pandas as pd
 import plotly.express as px
-import plotly.io as pio
-import statsmodels.api as sm
 import plotly.graph_objects as go
+import statsmodels.api as sm
 import streamlit as st
-import tempfile
-import shutil
-
 from pycaret.regression import load_model, predict_model
 
 # Load the trained PyCaret model
@@ -19,7 +13,7 @@ st.set_page_config(page_title="Thermal Comfort Tool", layout="wide")
 
 st.title("Uni.systems")
 st.header("Comfortness prediction tool for the building of Uni.systems and electric energy consumption.")
-st.subheader("Options: Machine Learning or EnergyPlus Simulation")
+st.subheader("Options: Machine Learning")
 
 def calculate_ppd(pmv):
     return 100 - 95 * math.exp(-0.03353 * pmv**4 - 0.2179 * pmv**2)
@@ -88,9 +82,9 @@ def process_ml_dataframe(df):
         progress_bar = st.progress(0)
 
         for i, row in df.iterrows():
-            if 'Mean Radiant Temperature(C)' in df.columns and pd.notna(row.get('Mean Radiant Temperature(C)')):
+            if has_mrt and pd.notna(row.get('Mean Radiant Temperature(C)')):
                 mrt = row['Mean Radiant Temperature(C)']
-            elif all(col in df.columns for col in ['Globe temperature (C)', 'Air temperature (C)', 'Air velocity (m/s)']):
+            elif has_globe:
                 mrt = calculate_mrt(row['Globe temperature (C)'], row['Air temperature (C)'], row['Air velocity (m/s)'])
             else:
                 mrt = None
@@ -114,7 +108,7 @@ def process_ml_dataframe(df):
                 pmv = output['prediction_label'][0]
                 ppd = calculate_ppd(pmv)
                 results.append({"PMV": pmv, "PPD": ppd})
-            except Exception as e:
+            except Exception:
                 results.append({"PMV": None, "PPD": None})
 
             progress_bar.progress((i + 1) / len(df))
@@ -148,19 +142,8 @@ def process_ml_dataframe(df):
         csv = result_df.to_csv(index=False).encode('utf-8')
         st.download_button("Download ML Predictions", csv, file_name="ml_predictions.csv")
 
-def run_energyplus_simulation(idf_file, epw_file, output_dir):
-    energyplus_exe = r"C:\EnergyPlusV25-1-0\energyplus.exe"
-    readvars_exe = r"C:\EnergyPlusV25-1-0\PostProcess\ReadVarsESO.exe"
-    expand_objects_exe = r"C:\EnergyPlusV25-1-0\ExpandObjects.exe"
-
-    with tempfile.TemporaryDirectory() as tmpdir:
-        idf_path = os.path.join(tmpdir, "in.idf")
-        epw_path = os.path.join(tmpdir, "weather.epw")
-
-        with open(idf_path, "wb") as f: f.write(idf_file.read())
-        with open(epw_path, "wb") as f: f.write(epw_file.read())
-
-        subprocess.run([expand_objects_exe], cwd=tmpdir, check=True)
-
-        expanded_path = os.path.join(tmpdir, "expanded.idf")
-       
+# Streamlit file uploader for CSV input
+uploaded_file = st.file_uploader("Upload your CSV data for prediction", type=["csv"])
+if uploaded_file is not None:
+    df = pd.read_csv(uploaded_file)
+    process_ml_dataframe(df)
